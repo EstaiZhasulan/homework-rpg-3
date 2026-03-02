@@ -27,10 +27,14 @@ public final class BattleEngine {
         Objects.requireNonNull(teamA, "teamA must not be null");
         Objects.requireNonNull(teamB, "teamB must not be null");
 
-        List<Combatant> a = new ArrayList<>(teamA);
-        List<Combatant> b = new ArrayList<>(teamB);
+        List<Combatant> a = copyAndValidateTeam(teamA, "teamA");
+        List<Combatant> b = copyAndValidateTeam(teamB, "teamB");
+
+        removeDeadInPlace(a);
+        removeDeadInPlace(b);
 
         EncounterResult result = new EncounterResult();
+
         result.addLog("=== Encounter Start ===");
         result.addLog("Team A size: " + (teamA == null ? "null" : teamA.size()));
         result.addLog("Team B size: " + (teamB == null ? "null" : teamB.size()));
@@ -38,5 +42,20 @@ public final class BattleEngine {
         result.setWinner("TBD");
         result.addLog("=== Encounter End ===");
         return result;
+    }
+    private static List<Combatant> copyAndValidateTeam(List<Combatant> team, String paramName) {
+        List<Combatant> copy = new ArrayList<>(team.size());
+        for (int i = 0; i < team.size(); i++) {
+            Combatant c = team.get(i);
+            if (c == null) {
+                throw new IllegalArgumentException(paramName + " contains null at index " + i);
+            }
+            copy.add(c);
+        }
+        return copy;
+    }
+
+    private static void removeDeadInPlace(List<Combatant> team) {
+        team.removeIf(c -> c == null || !c.isAlive());
     }
 }
