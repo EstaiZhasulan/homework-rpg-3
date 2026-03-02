@@ -16,6 +16,10 @@ public final class BattleEngine {
         }
         return instance;
     }
+    public BattleEngine setRandomSeed(long seed) {
+        this.random = new Random(seed);
+        return this;
+    }
     public void reset() {
         this.random = new Random(DEFAULT_SEED);
     }
