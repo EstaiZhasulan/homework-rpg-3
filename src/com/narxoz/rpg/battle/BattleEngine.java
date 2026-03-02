@@ -23,4 +23,14 @@ public final class BattleEngine {
     public void reset() {
         this.random = new Random(DEFAULT_SEED);
     }
+    public EncounterResult runEncounter(List<Combatant> teamA, List<Combatant> teamB) {
+        EncounterResult result = new EncounterResult();
+        result.addLog("=== Encounter Start ===");
+        result.addLog("Team A size: " + (teamA == null ? "null" : teamA.size()));
+        result.addLog("Team B size: " + (teamB == null ? "null" : teamB.size()));
+        result.setRounds(0);
+        result.setWinner("TBD");
+        result.addLog("=== Encounter End ===");
+        return result;
+    }
 }
