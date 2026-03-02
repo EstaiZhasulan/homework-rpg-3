@@ -24,6 +24,12 @@ public final class BattleEngine {
         this.random = new Random(DEFAULT_SEED);
     }
     public EncounterResult runEncounter(List<Combatant> teamA, List<Combatant> teamB) {
+        Objects.requireNonNull(teamA, "teamA must not be null");
+        Objects.requireNonNull(teamB, "teamB must not be null");
+
+        List<Combatant> a = new ArrayList<>(teamA);
+        List<Combatant> b = new ArrayList<>(teamB);
+
         EncounterResult result = new EncounterResult();
         result.addLog("=== Encounter Start ===");
         result.addLog("Team A size: " + (teamA == null ? "null" : teamA.size()));
