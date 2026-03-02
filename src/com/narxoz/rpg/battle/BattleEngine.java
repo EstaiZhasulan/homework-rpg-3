@@ -42,6 +42,45 @@ public final class BattleEngine {
         result.setWinner("TBD");
         result.addLog("=== Encounter End ===");
         return result;
+        int rounds = 0;
+        final int maxRoundsSafety = 10_000;
+
+        while (!a.isEmpty() && !b.isEmpty() && rounds < maxRoundsSafety) {
+            rounds++;
+            result.addLog("");
+            result.addLog("--- Round " + rounds + " ---");
+
+            result.addLog("Team A attacks:");
+            // TODO next commit: performTurn
+
+            if (b.isEmpty()) break;
+
+            result.addLog("Team B attacks:");
+            // TODO next commit: performTurn
+
+            removeDeadInPlace(a);
+            removeDeadInPlace(b);
+        }
+
+        result.setRounds(rounds);
+
+        String winner;
+        if (a.isEmpty() && b.isEmpty()) {
+            winner = "Draw";
+        } else if (b.isEmpty()) {
+            winner = "Team A";
+        } else if (a.isEmpty()) {
+            winner = "Team B";
+        } else {
+            winner = "Draw (max rounds reached)";
+            result.addLog("Safety stop: max rounds reached (" + maxRoundsSafety + ").");
+        }
+        result.setWinner(winner);
+
+        result.addLog("");
+        result.addLog("=== Encounter End ===");
+        result.addLog("Winner: " + winner);
+        return result;
     }
     private static List<Combatant> copyAndValidateTeam(List<Combatant> team, String paramName) {
         List<Combatant> copy = new ArrayList<>(team.size());
@@ -58,4 +97,5 @@ public final class BattleEngine {
     private static void removeDeadInPlace(List<Combatant> team) {
         team.removeIf(c -> c == null || !c.isAlive());
     }
+
 }
